@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Екатерина Иванцева](https://up.htmlacademy.ru/javascript/19/user/188118).
-* Наставник: `Елисей Лукин`.
+* Наставник: [Елисей Лукин](https://htmlacademy.ru/profile/id1338749).
 
 ---
 
