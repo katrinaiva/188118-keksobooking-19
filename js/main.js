@@ -11,7 +11,7 @@ var photos = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.g
 var getAvatarImgList = function () {
   var avatarImgList = [];
   for (var i = 1; i <= 8; i++) {
-    avatarImgList.push('img/avatars/userget0' + i + '.png');
+    avatarImgList.push('img/avatars/user0' + i + '.png');
   }
   return avatarImgList;
 };
@@ -24,14 +24,13 @@ var getProperties = function (properties) {
   return properties[getRandomItem(properties)];
 };
 
-var getRandomNumber = function (min, max) {
+var getRandomIntInclusive = function (min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 };
 
 var getListItems = function (list) {
-  var newListLength = getRandomNumber(1, list.length);
-  var newList = list.slice(0, newListLength);
-  return newList;
+  var newListLength = getRandomIntInclusive(1, list.length);
+  return list.slice(0, newListLength);
 };
 
 var getAdItem = function (j) {
@@ -53,8 +52,8 @@ var getAdItem = function (j) {
       photos: getListItems(photos),
     },
     location: {
-      x: getRandomNumber(130, 630),
-      y: getRandomNumber(130, 630),
+      x: getRandomIntInclusive(130, 630),
+      y: getRandomIntInclusive(130, 630),
     }
   };
 };
@@ -67,3 +66,23 @@ for (var j = 0; j < 8; j++) {
 
 document.querySelector('.map').classList.remove('map--faded');
 
+var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
+
+var getPinItem = function () {
+  var pinItem = pinTemplate.cloneNode(true);
+  pinItem.querySelector('img[src]').src = adList[i].author.avatar;
+  pinItem.querySelector('img[alt]').alt = 'заголовок объявления';
+  var xOffset = pinItem.querySelector('img[width]').width / 2;
+  var yOffset = pinItem.querySelector('img[height]').height;
+  pinItem.style.left = adList[i].location.x + xOffset + 'px';
+  pinItem.style.top = adList[i].location.y + yOffset + 'px';
+  return pinItem;
+};
+
+var pinFragment = document.createDocumentFragment();
+
+for (var i = 0; i < 8; i++) {
+  pinFragment.appendChild(getPinItem());
+}
+
+document.querySelector('.map__pins').appendChild(pinFragment);
