@@ -1,66 +1,69 @@
 'use strict';
 
-var price = [100, 300, 150, 50, 200, 250, 400];
-var rooms = [1, 2, 3, 4];
-var guests = [1, 2, 3, 4];
-var timeCheck = ['12:00', '13:00', '14:00'];
-var type = ['palace', 'flat', 'house', 'bungalo'];
-var features = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
-var photos = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
+var TITLES = [
+  'Уютное гнездышко для молодоженов',
+  'Для молодоженов',
+  'Атмосферное местечко',
+];
+var PRICES = [100, 300, 150, 50, 200, 250, 400];
+var ROOMS = [1, 2, 3, 4];
+var GUESTS = [1, 2, 3, 4];
+var TIMES_CHECK = ['12:00', '13:00', '14:00'];
+var TYPES = ['palace', 'flat', 'house', 'bungalo'];
+var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
+var PHOTOS = [
+  'http://o0.github.io/assets/images/tokyo/hotel1.jpg',
+  'http://o0.github.io/assets/images/tokyo/hotel2.jpg',
+  'http://o0.github.io/assets/images/tokyo/hotel3.jpg'
+];
+var DESCRIPTIONS = [
+  'Великолепная квартира-студия в центре Токио. Подходит как туристам, так и бизнесменам. Квартира полностью укомплектована и недавно отремонтирована.',
+  'Превосходные аппартаменты в центре Токио. Аппартаменты полностью укомплектованы техникой и всем необходимым.',
+  'Великолепная квартира-студия в центре. Подходит как туристам, так и бизнесменам.',
+  'Великолепная квартира в центре. Подходит как туристам, так и бизнесменам.',
+];
 
-var getAvatarImgList = function () {
-  var avatarImgList = [];
-  for (var i = 1; i <= 8; i++) {
-    avatarImgList.push('img/avatars/user0' + i + '.png');
-  }
-  return avatarImgList;
+var getRandomInt = function (min, max) {
+  return Math.floor(Math.random() * (max + 1 - min)) + min;
 };
 
-var getRandomItem = function (RandomItem) {
-  return Math.floor(Math.random() * RandomItem.length);
-};
-
-var getProperties = function (properties) {
-  return properties[getRandomItem(properties)];
-};
-
-var getRandomIntInclusive = function (min, max) {
-  return Math.floor(Math.random() * (max - min)) + min;
+var getRandomItem = function (properties) {
+  return properties[getRandomInt(0, properties.length - 1)];
 };
 
 var getListItems = function (list) {
-  var newListLength = getRandomIntInclusive(1, list.length);
+  var newListLength = getRandomInt(1, list.length);
   return list.slice(0, newListLength);
 };
 
-var getAdItem = function (j) {
+var getAdItem = function () {
   return {
     author: {
-      avatar: getAvatarImgList()[j],
+      avatar: 'img/avatars/user0' + j + '.png',
     },
     offer: {
-      title: 'заголовок предложения',
+      title: getRandomItem(TITLES),
       address: '{{location.x}}, {{location.y}}',
-      price: getProperties(price),
-      type: getProperties(type),
-      rooms: getProperties(rooms),
-      guests: getProperties(guests),
-      checkin: getProperties(timeCheck),
-      checkout: getProperties(timeCheck),
-      features: getListItems(features),
-      description: 'строка с описанием',
-      photos: getListItems(photos),
+      price: getRandomItem(PRICES),
+      type: getRandomItem(TYPES),
+      rooms: getRandomItem(ROOMS),
+      guests: getRandomItem(GUESTS),
+      checkin: getRandomItem(TIMES_CHECK),
+      checkout: getRandomItem(TIMES_CHECK),
+      features: getListItems(FEATURES),
+      description: getRandomItem(DESCRIPTIONS),
+      photos: getListItems(PHOTOS),
     },
     location: {
-      x: getRandomIntInclusive(130, 630),
-      y: getRandomIntInclusive(130, 630),
+      x: getRandomInt(130, 630),
+      y: getRandomInt(130, 630),
     }
   };
 };
 
 var adList = [];
 
-for (var j = 0; j < 8; j++) {
+for (var j = 1; j <= 8; j++) {
   adList.push(getAdItem(j));
 }
 
