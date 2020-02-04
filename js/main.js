@@ -31,12 +31,12 @@ var getRandomItem = function (properties) {
   return properties[getRandomInt(0, properties.length - 1)];
 };
 
-var getListItems = function (list) {
-  var newListLength = getRandomInt(1, list.length);
-  return list.slice(0, newListLength);
+var getRandomListItems = function (properties) {
+  var newListLength = getRandomInt(1, properties.length);
+  return properties.slice(0, newListLength);
 };
 
-var getAdItem = function () {
+var getAdItem = function (j) {
   return {
     author: {
       avatar: 'img/avatars/user0' + j + '.png',
@@ -50,9 +50,9 @@ var getAdItem = function () {
       guests: getRandomItem(GUESTS),
       checkin: getRandomItem(TIMES_CHECK),
       checkout: getRandomItem(TIMES_CHECK),
-      features: getListItems(FEATURES),
+      features: getRandomListItems(FEATURES),
       description: getRandomItem(DESCRIPTIONS),
-      photos: getListItems(PHOTOS),
+      photos: getRandomListItems(PHOTOS),
     },
     location: {
       x: getRandomInt(130, 630),
