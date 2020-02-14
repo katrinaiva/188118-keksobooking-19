@@ -1,7 +1,6 @@
 'use strict';
 
-function getActivation() {
-
+function activate() {
   var TITLES = [
     'Уютное гнездышко для молодоженов',
     'Для молодоженов',
@@ -94,20 +93,14 @@ function getActivation() {
 var fieldsSets = document.querySelectorAll('fieldset');
 var selectors = document.querySelectorAll('select');
 
-var disabledStates = function (formElement) {
+var toggleStates = function (formElement, isDisabled) {
   for (var i = 0; i < formElement.length; i++) {
-    formElement[i].disabled = true;
+    formElement[i].disabled = isDisabled;
   }
 };
 
-var enabledStates = function (formElement) {
-  for (var i = 0; i < formElement.length; i++) {
-    formElement[i].disabled = false;
-  }
-};
-
-disabledStates(fieldsSets);
-disabledStates(selectors);
+toggleStates(fieldsSets, true);
+toggleStates(selectors, true);
 
 var mapPinMain = document.querySelector('.map__pin--main');
 var adForm = document.querySelector('.ad-form');
@@ -117,13 +110,13 @@ var formSelect = adForm.querySelectorAll('select');
 var filterSelect = mapFilters.querySelectorAll('select');
 var filterFieldset = mapFilters.querySelectorAll('fieldset');
 
-var domElementChangedState = function () {
+var changeDomElementState = function () {
   document.querySelector('.map').classList.remove('map--faded');
   adForm.classList.remove('ad-form--disabled');
-  enabledStates(formFieldset);
-  enabledStates(formSelect);
-  enabledStates(filterSelect);
-  enabledStates(filterFieldset);
+  toggleStates(formFieldset, false);
+  toggleStates(formSelect, false);
+  toggleStates(filterSelect, false);
+  toggleStates(filterFieldset, false);
 };
 
 var fieldAddress = document.querySelector('#address');
@@ -146,22 +139,30 @@ var getCoordinatesPinDisabled = function () {
 
 getCoordinatesPinDisabled();
 
-var onLeftButtonMousedown = function (evt) {
+var mapDisabled = document.querySelector('.map--faded');
+
+var onActivatePins = function (evt) {
   if (evt.button === 0) {
-    domElementChangedState();
+    activate();
+    mapDisabled.removeEventListener('mousedown', onActivatePins);
   }
 };
 
-mapPinMain.addEventListener('mousedown', onLeftButtonMousedown);
+mapDisabled.addEventListener('mousedown', onActivatePins);
 
-mapPinMain.addEventListener('mousedown', function () {
-  getActivation();
-  getCoordinatesPinActive();
-});
+var onPinMainMousedown = function (evt) {
+  if (evt.button === 0) {
+    changeDomElementState();
+    getCoordinatesPinActive();
+    mapPinMain.removeEventListener('mousedown', onPinMainMousedown);
+  }
+};
+
+mapPinMain.addEventListener('mousedown', onPinMainMousedown);
 
 mapPinMain.addEventListener('keydown', function (evt) {
   if (evt.key === 'Enter') {
-    domElementChangedState();
+    changeDomElementState();
   }
 });
 
