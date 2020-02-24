@@ -142,3 +142,4 @@ var getCardItem = function () {
 cardFragment.appendChild(getCardItem());
 
 document.querySelector('.map__pins').appendChild(cardFragment);
+
