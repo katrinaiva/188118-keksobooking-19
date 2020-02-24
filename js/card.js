@@ -91,7 +91,6 @@ var cardFragment = document.createDocumentFragment();
 
 var templateCard = document.querySelector('#card').content.querySelector('.map__card');
 
-
 var convertOfferType = function (ij) {
   switch (adList[ij].offer.type) {
     case 'house':
@@ -109,6 +108,20 @@ var convertOfferType = function (ij) {
 
 var getCardItem = function () {
   var cardItem = templateCard.cloneNode(true);
+  var cardImg = cardItem.querySelector('.popup__photo');
+  var cardDivImg = cardItem.querySelector('.popup__photos');
+  function getCardImg(k) {
+    cardImg.src = adList[1].offer.photos[k];
+    return cardImg;
+  }
+  for (var k = 0; k < adList[1].offer.photos.length; k++) {
+    //console.log(getCardImg(k));
+    var cloneCardImg = cardImg.cloneNode(true);
+    cloneCardImg = getCardImg(k);
+    cardDivImg.appendChild(cloneCardImg);
+    // console.log(cardDivImg);
+  }
+
   cardItem.querySelector('.popup__title').textContent = adList[1].offer.title;
   cardItem.querySelector('.popup__text--address').textContent = adList[1].offer.address;
   cardItem.querySelector('.popup__text--price').textContent = adList[1].offer.price + '₽/ночь';
@@ -117,12 +130,11 @@ var getCardItem = function () {
   cardItem.querySelector('.popup__text--time').textContent = 'Заезд после ' + adList[1].offer.checkin + ' выезд до ' + adList[1].offer.checkout;
   cardItem.querySelector('.popup__features').textContent = adList[1].offer.features;
   cardItem.querySelector('.popup__description').textContent = adList[1].offer.description;
-  cardItem.querySelector('.popup__photos img').src = 'http://o0.github.io/assets/images/tokyo/hotel1.jpg';
+  //cardItem.querySelector('.popup__photos').push(photosSrc);
   cardItem.querySelector('.popup__avatar').src = adList[1].author.avatar;
   return cardItem;
 };
 
 cardFragment.appendChild(getCardItem());
-
 
 document.querySelector('.map__pins').appendChild(cardFragment);
