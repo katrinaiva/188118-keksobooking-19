@@ -1,8 +1,19 @@
 'use strict';
 
 (function () {
+  var adForm = document.querySelector('.ad-form');
+  var capacity = adForm.querySelector('#capacity');
+  var roomNumber = adForm.querySelector('#room_number');
+  var BORDER_ERROR = '2px dashed red';
+  var BORDER_DEFAULT = '1px solid #d9d9d3';
+  var mapPinMain = document.querySelector('.map__pin--main');
   var fieldsSets = document.querySelectorAll('fieldset');
   var selectors = document.querySelectorAll('select');
+  var mapFilters = document.querySelector('.map__filters');
+  var formFieldset = adForm.querySelectorAll('fieldset');
+  var formSelect = adForm.querySelectorAll('select');
+  var filterSelect = mapFilters.querySelectorAll('select');
+  var filterFieldset = mapFilters.querySelectorAll('fieldset');
 
   var toggleStates = function (formElement, isDisabled) {
     for (var i = 0; i < formElement.length; i++) {
@@ -12,14 +23,6 @@
 
   toggleStates(fieldsSets, true);
   toggleStates(selectors, true);
-
-  var mapPinMain = document.querySelector('.map__pin--main');
-  var adForm = document.querySelector('.ad-form');
-  var mapFilters = document.querySelector('.map__filters');
-  var formFieldset = adForm.querySelectorAll('fieldset');
-  var formSelect = adForm.querySelectorAll('select');
-  var filterSelect = mapFilters.querySelectorAll('select');
-  var filterFieldset = mapFilters.querySelectorAll('fieldset');
 
   var changeDomElementState = function () {
     document.querySelector('.map').classList.remove('map--faded');
@@ -50,60 +53,6 @@
 
   getCoordinatesPinDisabled();
 
-  var mapPinsWrap = document.querySelector('.map__pins');
-
-  var onActivatePins = function (evt) {
-    if (evt.button === 0) {
-      window.pin.activate();
-      mapPinMain.removeEventListener('mousedown', onActivatePins);
-      var mapPins = document.querySelectorAll('.map__pin');
-      var mapPinActive = mapPinsWrap.querySelector('.map__pin--active');
-
-      var getMapPinActive = function (mapPinItem) {
-        if (mapPinActive) {
-          mapPinActive.classList.remove('map__pin--active');
-          window.card.mapCard.classList.add('popup');
-        }
-        mapPinItem.classList.add('map__pin--active');
-        window.card.mapCard.classList.remove('popup');
-      };
-
-      var mapPinClick = function (mapPinItem) {
-        mapPinItem.addEventListener('click', function () {
-          getMapPinActive(mapPinItem);
-          // window.card.activateCard();
-        });
-      };
-
-      for (var i = 1; i < mapPins.length; i++) {
-        mapPinClick(mapPins[i]);
-      }
-    }
-  };
-
-  mapPinMain.addEventListener('mousedown', onActivatePins);
-
-  var onPinMainMousedown = function (evt) {
-    if (evt.button === 0) {
-      changeDomElementState();
-      getCoordinatesPinActive();
-      mapPinMain.removeEventListener('mousedown', onPinMainMousedown);
-    }
-  };
-
-  mapPinMain.addEventListener('mousedown', onPinMainMousedown);
-
-  mapPinMain.addEventListener('keydown', function (evt) {
-    if (evt.key === 'Enter') { // TODO key in to utils.js
-      changeDomElementState();
-    }
-  });
-
-  var capacity = adForm.querySelector('#capacity');
-  var roomNumber = adForm.querySelector('#room_number');
-  var BORDER_ERROR = '2px dashed red';
-  var BORDER_DEFAULT = '1px solid #d9d9d3';
-
   var checkValue = function () {
     if (+capacity.value > +roomNumber.value) {
       capacity.setCustomValidity('количество гостей, должно быть не больше ' + roomNumber.value);
@@ -126,4 +75,9 @@
   roomNumber.addEventListener('change', function () {
     checkValue();
   });
+
+  window.form = {
+    changeDomElementState: changeDomElementState,
+    getCoordinatesPinActive: getCoordinatesPinActive
+  };
 })();

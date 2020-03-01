@@ -7,12 +7,12 @@
 
     var getPinItem = function () {
       var pinItem = pinTemplate.cloneNode(true);
-      pinItem.querySelector('img[src]').src = window.map.adList[i].author.avatar;
+      pinItem.querySelector('img[src]').src = window.data.adList[i].author.avatar;
       pinItem.querySelector('img[alt]').alt = 'заголовок объявления';
       var xOffset = pinItem.querySelector('img[width]').width / 2;
       var yOffset = pinItem.querySelector('img[height]').height;
-      pinItem.style.left = window.map.adList[i].location.x + xOffset + 'px';
-      pinItem.style.top = window.map.adList[i].location.y + yOffset + 'px';
+      pinItem.style.left = window.data.adList[i].location.x + xOffset + 'px';
+      pinItem.style.top = window.data.adList[i].location.y + yOffset + 'px';
       return pinItem;
     };
 
