@@ -50,16 +50,38 @@
 
   getCoordinatesPinDisabled();
 
-  var mapDisabled = document.querySelector('.map--faded');
+  var mapPinsWrap = document.querySelector('.map__pins');
 
   var onActivatePins = function (evt) {
     if (evt.button === 0) {
       window.pin.activate();
-      mapDisabled.removeEventListener('mousedown', onActivatePins);
+      mapPinMain.removeEventListener('mousedown', onActivatePins);
+      var mapPins = document.querySelectorAll('.map__pin');
+      var mapPinActive = mapPinsWrap.querySelector('.map__pin--active');
+
+      var getMapPinActive = function (mapPinItem) {
+        if (mapPinActive) {
+          mapPinActive.classList.remove('map__pin--active');
+          window.card.mapCard.classList.add('popup');
+        }
+        mapPinItem.classList.add('map__pin--active');
+        window.card.mapCard.classList.remove('popup');
+      };
+
+      var mapPinClick = function (mapPinItem) {
+        mapPinItem.addEventListener('click', function () {
+          getMapPinActive(mapPinItem);
+          // window.card.activateCard();
+        });
+      };
+
+      for (var i = 1; i < mapPins.length; i++) {
+        mapPinClick(mapPins[i]);
+      }
     }
   };
 
-  mapDisabled.addEventListener('mousedown', onActivatePins);
+  mapPinMain.addEventListener('mousedown', onActivatePins);
 
   var onPinMainMousedown = function (evt) {
     if (evt.button === 0) {
@@ -72,7 +94,7 @@
   mapPinMain.addEventListener('mousedown', onPinMainMousedown);
 
   mapPinMain.addEventListener('keydown', function (evt) {
-    if (evt.key === 'Enter') {
+    if (evt.key === 'Enter') { // TODO key in to utils.js
       changeDomElementState();
     }
   });

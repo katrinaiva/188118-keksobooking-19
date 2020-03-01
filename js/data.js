@@ -1,6 +1,6 @@
 'use strict';
 
-(function activate() {
+(function () {
   var TITLES = [
     'Уютное гнездышко для молодоженов',
     'Для молодоженов',

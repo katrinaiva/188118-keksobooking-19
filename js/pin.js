@@ -3,6 +3,7 @@
 (function () {
   function activate() {
     var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
+    var pinFragment = document.createDocumentFragment();
 
     var getPinItem = function () {
       var pinItem = pinTemplate.cloneNode(true);
@@ -14,8 +15,6 @@
       pinItem.style.top = window.map.adList[i].location.y + yOffset + 'px';
       return pinItem;
     };
-
-    var pinFragment = document.createDocumentFragment();
 
     for (var i = 0; i < 8; i++) {
       pinFragment.appendChild(getPinItem());

@@ -1017,6 +1017,14 @@ fieldset {
   background-color: #ffffff;
 }
 
+.popup {
+  position: absolute;
+  clip: rect(0 0 0 0);
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+}
+
 .popup__avatar {
   position: absolute;
   bottom: 100%;

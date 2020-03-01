@@ -1,8 +1,7 @@
 'use strict';
 
 (function () {
-  var cardFragment = document.createDocumentFragment();
-
+  var mapFiltersContainer = document.querySelector('.map__filters-container');
   var templateCard = document.querySelector('#card').content.querySelector('.map__card');
 
   var convertOfferType = function (indexType) {
@@ -53,9 +52,32 @@
     return cardItem;
   };
 
-  cardFragment.appendChild(getCardItem());
+  document.querySelector('.map').insertBefore(getCardItem(), mapFiltersContainer);
 
-  document.querySelector('.map__pins').appendChild(cardFragment);
+  var mapCard = document.querySelector('.map__card');
+  var popupClose = document.querySelector('.popup__close');
+  var mapCardDisabled = document.querySelector('.popup');
+  popupClose.addEventListener('click', function () {
+    mapCard.classList.add('popup');
+  });
+
+  document.addEventListener('keydown', function (evt) {
+    if (evt.key === 'Escape') { // TODO
+      mapCard.classList.add('popup');
+    }
+  });
+
+  popupClose.addEventListener('keydown', function (evt) {
+    if (evt.key === 'Enter') { // TODO
+      mapCard.classList.add('popup');
+    }
+  });
+
+  window.card = {
+    mapCard: mapCard,
+    popupClose: popupClose,
+    mapCardDisabled: mapCardDisabled
+  };
 })();
 
 
