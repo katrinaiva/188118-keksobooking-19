@@ -1,54 +1,71 @@
 'use strict';
 
 (function () {
-  var getRandomInt = function (min, max) {
-    return Math.floor(Math.random() * (max + 1 - min)) + min;
-  };
+  var mapCard = document.querySelector('.map__card');
+  var popupClose = document.querySelector('.popup__close');
+  var mapPinMain = document.querySelector('.map__pin--main');
 
-  var getRandomItem = function (properties) {
-    return properties[getRandomInt(0, properties.length - 1)];
-  };
+  // управляет карточкой объявления
+  popupClose.addEventListener('click', function () {
+    mapCard.classList.add('popup');
+  });
 
-  var getRandomListItems = function (properties) {
-    var newListLength = getRandomInt(1, properties.length);
-    return properties.slice(0, newListLength);
-  };
+  document.addEventListener('keydown', function (evt) {
+    if (evt.key === 'Escape') { // TODO
+      mapCard.classList.add('popup');
+    }
+  });
 
-  var getAdItem = function (j) {
-    return {
-      author: {
-        avatar: 'img/avatars/user0' + j + '.png',
-      },
-      offer: {
-        title: getRandomItem(window.data.TITLES),
-        address: 'location.x, location.y',
-        price: getRandomItem(window.data.PRICES),
-        type: getRandomItem(window.data.TYPES),
-        rooms: getRandomItem(window.data.ROOMS),
-        guests: getRandomItem(window.data.GUESTS),
-        checkin: getRandomItem(window.data.TIMES_CHECK),
-        checkout: getRandomItem(window.data.TIMES_CHECK),
-        features: getRandomListItems(window.data.FEATURES),
-        description: getRandomItem(window.data.DESCRIPTIONS),
-        photos: getRandomListItems(window.data.PHOTOS),
-      },
-      location: {
-        x: getRandomInt(130, 630),
-        y: getRandomInt(130, 630),
-      }
+  popupClose.addEventListener('keydown', function (evt) {
+    if (evt.key === 'Enter') { // TODO
+      mapCard.classList.add('popup');
+    }
+  });
+  // активация карточки и пина
+  var getActivePin = function () {
+    var mapPins = document.querySelectorAll('.map__pin');
+    var mapPinsWrap = document.querySelector('.map__pins');
+
+    var mapPinClick = function (mapPinItem) {
+      mapPinItem.addEventListener('click', function () {
+        var mapPinActive = mapPinsWrap.querySelector('.map__pin--active');
+        if (mapPinActive) {
+          mapPinActive.classList.remove('map__pin--active');
+          mapCard.classList.add('popup');
+        }
+        mapPinItem.classList.add('map__pin--active');
+        mapCard.classList.remove('popup');
+      });
     };
+
+    for (var i = 1; i < mapPins.length; i++) {
+      mapPinClick(mapPins[i]);
+    }
   };
 
-  var adList = [];
+  var onActivatePins = function (evt) {
+    if (evt.button === 0) {
+      window.pin.activate();
+      getActivePin();
+    }
 
-  for (var j = 1; j <= 8; j++) {
-    adList.push(getAdItem(j));
-  }
-
-  window.map = {
-    adList: adList
+    mapPinMain.removeEventListener('mousedown', onActivatePins);
   };
 
+  var onPinMainMousedown = function (evt) {
+    if (evt.button === 0) {
+      window.form.changeDomElementState();
+      window.form.getCoordinatesPinActive();
+      mapPinMain.removeEventListener('mousedown', onPinMainMousedown);
+    }
+  };
+
+  mapPinMain.addEventListener('mousedown', onActivatePins);
+  mapPinMain.addEventListener('mousedown', onPinMainMousedown);
+
+  mapPinMain.addEventListener('keydown', function (evt) {
+    if (evt.key === 'Enter') { // TODO key in to utils.js
+      window.form.changeDomElementState();
+    }
+  });
 })();
-
-
