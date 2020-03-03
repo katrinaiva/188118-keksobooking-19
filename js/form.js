@@ -14,6 +14,10 @@
   var formSelect = adForm.querySelectorAll('select');
   var filterSelect = mapFilters.querySelectorAll('select');
   var filterFieldset = mapFilters.querySelectorAll('fieldset');
+  var timeIn = document.querySelector('#timein');
+  var timeOut = document.querySelector('#timeout');
+  var typeOfHousing = document.querySelector('#type');
+  var priceOfHousing = document.querySelector('#price');
 
   var toggleStates = function (formElement, isDisabled) {
     for (var i = 0; i < formElement.length; i++) {
@@ -74,6 +78,42 @@
   });
   roomNumber.addEventListener('change', function () {
     checkValue();
+  });
+
+  timeIn.addEventListener('change', function () {
+    timeOut.selectedIndex = timeIn.selectedIndex;
+  });
+
+  timeOut.addEventListener('change', function () {
+    timeIn.selectedIndex = timeOut.selectedIndex;
+  });
+
+  var getPriceValue = function (priceValue) {
+    priceOfHousing.value = priceValue;
+    priceOfHousing.min = priceValue;
+    priceOfHousing.placeholder = priceValue;
+  };
+
+  getPriceValue('выберете тип жилья');
+
+  typeOfHousing.addEventListener('change', function () {
+    var typeOfHousingValue = typeOfHousing.value;
+    switch (typeOfHousingValue) {
+      case 'house':
+        getPriceValue('5000');
+        break;
+      case 'bungalo':
+        getPriceValue('0');
+        break;
+      case 'flat':
+        getPriceValue('1000');
+        break;
+      case 'palace':
+        getPriceValue('10000');
+        break;
+      default:
+        getPriceValue('нет подходящих значений');
+    }
   });
 
   window.form = {
