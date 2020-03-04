@@ -75,12 +75,6 @@
   var mapPinMainWidth = mapPinMain.offsetWidth;
   var mapPinMainHeight = mapPinMain.offsetHeight;
 
-  var getCoordinatesPinActive = function () {
-    var xCenterActive = mapPinX + mapPinMainWidth / 2;
-    var yCenterActive = mapPinY + mapPinMainHeight;
-    fieldAddress.value = xCenterActive + ', ' + yCenterActive;
-  };
-
   var getCoordinatesPinDisabled = function () {
     var xCenterDisabled = mapPinX + mapPinMainWidth / 2;
     var yCenterDisabled = mapPinY + mapPinMainHeight / 2;
@@ -116,8 +110,14 @@
             y: moveEvt.clientY
           };
 
+          var activePinMainWidth = (mapPinMainWidth / 2) + 'px';
+          var activePinMainHeight = (mapPinMainHeight) + 'px';
+
           mapPinMain.style.top = (mapPinMain.offsetTop - shift.y) + 'px';
           mapPinMain.style.left = (mapPinMain.offsetLeft - shift.x) + 'px';
+
+          fieldAddress.value = (parseInt((mapPinMain.style.top + activePinMainHeight), 10)) + 'px' +
+            ' , ' + (parseInt((mapPinMain.style.left + activePinMainWidth), 10)) + 'px';
         };
 
         var onMouseUp = function (upEvt) {
@@ -139,7 +139,6 @@
   var onPinMainMousedown = function (evt) {
     if (evt.button === 0) {
       changeDomElementState();
-      getCoordinatesPinActive();
       mapPinMain.removeEventListener('mousedown', onPinMainMousedown);
     }
   };
