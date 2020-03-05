@@ -113,10 +113,19 @@
           var activePinMainWidth = (mapPinMainWidth / 2) + 'px';
           var activePinMainHeight = (mapPinMainHeight) + 'px';
 
-          mapPinMain.style.top = (mapPinMain.offsetTop - shift.y) + 'px';
+
+          if (mapPinMain.offsetTop > 130 && mapPinMain.offsetTop < 630) {
+            mapPinMain.style.top = (mapPinMain.offsetTop - shift.y) + 'px';
+          }
+
           mapPinMain.style.left = (mapPinMain.offsetLeft - shift.x) + 'px';
 
-          fieldAddress.value = (parseInt((mapPinMain.style.top + activePinMainHeight), 10)) + 'px' +
+          var getCoordinatePinY = function () {
+            var mapPinMainActiveY = parseInt(mapPinMain.style.top + activePinMainHeight, 10);
+            return mapPinMainActiveY;
+          };
+
+          fieldAddress.value = getCoordinatePinY() + 'px' +
             ' , ' + (parseInt((mapPinMain.style.left + activePinMainWidth), 10)) + 'px';
         };
 
