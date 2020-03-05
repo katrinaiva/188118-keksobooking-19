@@ -12,7 +12,7 @@
   var formSelect = adForm.querySelectorAll('select');
   var filterSelect = mapFilters.querySelectorAll('select');
   var filterFieldset = mapFilters.querySelectorAll('fieldset');
-
+  var mapPinsWrap = document.querySelector('.map__pins');
   // управляет карточкой объявления
   popupClose.addEventListener('click', function () {
     mapCard.classList.add('popup');
@@ -32,7 +32,6 @@
   // активация карточки и пина
   var getActivePin = function () {
     var mapPins = document.querySelectorAll('.map__pin');
-    var mapPinsWrap = document.querySelector('.map__pins');
 
     var mapPinClick = function (mapPinItem) {
       mapPinItem.addEventListener('click', function () {
@@ -110,23 +109,43 @@
             y: moveEvt.clientY
           };
 
-          var activePinMainWidth = (mapPinMainWidth / 2) + 'px';
+          var activePinMainWidth = mapPinMainWidth / 2;
           var activePinMainHeight = (mapPinMainHeight) + 'px';
+          var borderlineXLeft = mapPinsWrap.offsetLeft;
+          var borderlineXRight = borderlineXLeft + mapPinsWrap.offsetWidth;
+          var borderlineX = mapPinMain.offsetLeft;
+          var borderlineY = mapPinMain.offsetTop;
 
-
-          if (mapPinMain.offsetTop > 130 && mapPinMain.offsetTop < 630) {
-            mapPinMain.style.top = (mapPinMain.offsetTop - shift.y) + 'px';
+          if (borderlineY < 130) {
+            borderlineY = 130;
           }
 
-          mapPinMain.style.left = (mapPinMain.offsetLeft - shift.x) + 'px';
+          if (borderlineY > 630) {
+            borderlineY = 630;
+          }
+
+          if (borderlineX < borderlineXLeft) {
+            borderlineX = borderlineXLeft;
+          }
+
+          if (borderlineX > borderlineXRight - activePinMainWidth) {
+            borderlineX = borderlineXRight - activePinMainWidth;
+          }
+
+          mapPinMain.style.top = (borderlineY - shift.y) + 'px';
+          mapPinMain.style.left = (borderlineX - shift.x) + 'px';
 
           var getCoordinatePinY = function () {
-            var mapPinMainActiveY = parseInt(mapPinMain.style.top + activePinMainHeight, 10);
-            return mapPinMainActiveY;
+            var coordinatePinActiveY = (parseInt(mapPinMain.style.top, 10) + parseInt(activePinMainHeight, 10)) + 'px';
+            return coordinatePinActiveY;
           };
 
-          fieldAddress.value = getCoordinatePinY() + 'px' +
-            ' , ' + (parseInt((mapPinMain.style.left + activePinMainWidth), 10)) + 'px';
+          var getCoordinatePinX = function () {
+            var coordinatePinActiveX = parseInt(mapPinMain.style.left, 10) + 'px';
+            return coordinatePinActiveX;
+          };
+
+          fieldAddress.value = getCoordinatePinY() + ' , ' + getCoordinatePinX();
         };
 
         var onMouseUp = function (upEvt) {
@@ -143,8 +162,7 @@
 
     mapPinMain.removeEventListener('mousedown', onActivatePins);
   };
-
-
+  
   var onPinMainMousedown = function (evt) {
     if (evt.button === 0) {
       changeDomElementState();
