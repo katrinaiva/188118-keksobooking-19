@@ -1,11 +1,11 @@
 'use strict';
 
 (function () {
+  var BORDER_ERROR = '2px dashed red';
+  var BORDER_DEFAULT = '1px solid #d9d9d3';
   var adForm = document.querySelector('.ad-form');
   var capacity = adForm.querySelector('#capacity');
   var roomNumber = adForm.querySelector('#room_number');
-  var BORDER_ERROR = '2px dashed red';
-  var BORDER_DEFAULT = '1px solid #d9d9d3';
   var timeIn = document.querySelector('#timein');
   var timeOut = document.querySelector('#timeout');
   var typeOfHousing = document.querySelector('#type');

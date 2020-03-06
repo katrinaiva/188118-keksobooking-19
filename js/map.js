@@ -1,6 +1,9 @@
 'use strict';
 
 (function () {
+  var KEY_ENTER = 'Enter';
+  var KEY_ESCAPE = 'Escape';
+  var LEFT_BTN_MOUSE = 0;
   var mapCard = document.querySelector('.map__card');
   var popupClose = document.querySelector('.popup__close');
   var adForm = document.querySelector('.ad-form');
@@ -19,13 +22,13 @@
   });
 
   document.addEventListener('keydown', function (evt) {
-    if (evt.key === 'Escape') { // TODO
+    if (evt.key === KEY_ESCAPE) {
       mapCard.classList.add('popup');
     }
   });
 
   popupClose.addEventListener('keydown', function (evt) {
-    if (evt.key === 'Enter') { // TODO
+    if (evt.key === KEY_ENTER) {
       mapCard.classList.add('popup');
     }
   });
@@ -83,7 +86,7 @@
   getCoordinatesPinDisabled();
 
   var onActivatePins = function (evt) {
-    if (evt.button === 0) {
+    if (evt.button === LEFT_BTN_MOUSE) {
       window.pin.activate();
       getActivePin();
 
@@ -97,7 +100,7 @@
 
         var getCoordinates = function (mouseEvent) {
           var activePinMainWidth = mapPinMainWidth / 2;
-          var activePinMainHeight = (mapPinMainHeight) + 'px';
+          var activePinMainHeight = mapPinMainHeight + 'px';
           var borderlineXLeft = mapPinsWrap.offsetLeft;
           var borderlineXRight = borderlineXLeft + mapPinsWrap.offsetWidth;
           var borderlineX = mapPinMain.offsetLeft;
@@ -167,7 +170,7 @@
   };
 
   var onPinMainMousedown = function (evt) {
-    if (evt.button === 0) {
+    if (evt.button === LEFT_BTN_MOUSE) {
       changeDomElementState();
       mapPinMain.removeEventListener('mousedown', onPinMainMousedown);
     }
@@ -177,7 +180,7 @@
   mapPinMain.addEventListener('mousedown', onPinMainMousedown);
 
   mapPinMain.addEventListener('keydown', function (evt) {
-    if (evt.key === 'Enter') { // TODO key in to utils.js
+    if (evt.key === KEY_ENTER) {
       window.form.changeDomElementState();
     }
   });
